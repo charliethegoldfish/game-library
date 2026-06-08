@@ -1,7 +1,7 @@
 {
 	"id": "game-library",
 	"name": "Game library",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"minAppVersion": "1.13.0",
 	"description": "For organising a game library.",
 	"author": "Charlie Cassidy",
