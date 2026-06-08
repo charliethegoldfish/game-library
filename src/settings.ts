@@ -1,20 +1,34 @@
 import { App, PluginSettingTab, Setting } from 'obsidian';
-import MyPlugin from './main';
+import GameLibrary from './main';
 
-export interface MyPluginSettings {
-	mySetting: string;
+export interface GameLibrarySettings {
+	gameLibraryPath: string;
 }
 
-export const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default',
+export const DEFAULT_SETTINGS: GameLibrarySettings = {
+	gameLibraryPath: '',
 };
 
-export class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+export class GameLibrarySettingTab extends PluginSettingTab {
+	plugin: GameLibrary;
 
-	constructor(app: App, plugin: MyPlugin) {
+	constructor(app: App, plugin: GameLibrary) {
 		super(app, plugin);
 		this.plugin = plugin;
+	}
+
+	getSettingDefinitions() {
+		return [
+			{
+				name: "Game library path",
+				desc: "Path to the root of where the game library will be stored.",
+				control: {
+					type: 'folder',
+					key: 'gameLibraryPath',
+					placeholder: 'Choose root folder for game library',
+				},
+			},
+		];
 	}
 
 	display(): void {
@@ -23,16 +37,17 @@ export class SampleSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName('Settings #1')
-			.setDesc("It's a secret")
-			.addText((text) =>
-				text
-					.setPlaceholder('Enter your secret')
-					.setValue(this.plugin.settings.mySetting)
-					.onChange(async (value) => {
-						this.plugin.settings.mySetting = value;
-						await this.plugin.saveSettings();
-					}),
-			);
+			.setName('Game library path')
+			.setDesc("Path to the root of where the game library will be stored.")
+			.addSearch((search) => {
+				search.setValue(this.plugin.settings.gameLibraryPath)
+				.setPlaceholder('Choose root folder for game library')
+				.onChange(async (value) => {
+					this.plugin.settings.gameLibraryPath = value;
+					await this.plugin.saveSettings();
+				});
+				
+			});
+
 	}
 }
